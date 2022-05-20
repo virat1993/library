@@ -2,6 +2,7 @@ package com.hexaad.library.service;
 
 import com.hexaad.library.dto.BooksDTO;
 import com.hexaad.library.dto.BorrowDTO;
+import com.hexaad.library.dto.UsersDTO;
 import com.hexaad.library.entity.BookBorrowEntity;
 import com.hexaad.library.entity.BooksEntity;
 import com.hexaad.library.entity.UsersEntity;
@@ -88,5 +89,16 @@ public class LibraryService {
             borrowBookRepository.saveAll(bookBorrowEntities);
         });
         return "returned successful";
+    }
+
+    public String addUser(UsersDTO usersDTO) {
+        UsersEntity usersEntity = UsersEntity.builder()
+                .address(usersDTO.getAddress())
+                .is_active(1)
+                .library_card_number(usersDTO.getLibraryCardNumber())
+                .name(usersDTO.getName())
+                .build();
+        usersRepository.save(usersEntity);
+        return "user added";
     }
 }

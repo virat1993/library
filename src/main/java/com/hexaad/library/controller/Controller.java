@@ -2,6 +2,7 @@ package com.hexaad.library.controller;
 
 import com.hexaad.library.dto.BooksDTO;
 import com.hexaad.library.dto.BorrowDTO;
+import com.hexaad.library.dto.UsersDTO;
 import com.hexaad.library.entity.BooksEntity;
 import com.hexaad.library.service.LibraryService;
 import lombok.Getter;
@@ -31,6 +32,11 @@ public class Controller {
     @PostMapping("/addBook")
     public String addBook(@RequestBody BooksDTO booksDTO){
         return libraryService.addBook(booksDTO);
+    }
+
+    @PostMapping("/addUser")
+    public String addUser(@RequestBody UsersDTO usersDTO){
+        return libraryService.addUser(usersDTO);
     }
 
     @PostMapping("/borrowBook")
