@@ -27,10 +27,22 @@ public class LibraryService {
     @Autowired
     BorrowBookRepository borrowBookRepository;
 
-    public List<BooksEntity> getListOfAvailableBooks() {
+    public List<BooksDTO> getListOfAvailableBooks() {
         Optional<List<BooksEntity>> data = Optional.ofNullable(booksRepository.findAll());
         return data.get().stream()
-                .filter(booksEntity -> booksEntity.getQuantity() > 0).collect(Collectors.toList());
+                .filter(booksEntity -> booksEntity.getQuantity() > 0)
+                .map(book ->
+                        BooksDTO.builder()
+                                .id(book.getId())
+                                .name(book.getName())
+                                .author(book.getAuthor())
+                                .isbn_no(book.getIsbn_no())
+                                .quantity(book.getQuantity())
+                                .year_of_publication(book.getYear_of_publication())
+                                .publication(book.getPublication())
+                                .build()
+                )
+                .collect(Collectors.toList());
     }
 
     public String addBook(BooksDTO booksDTO) {
@@ -75,7 +87,7 @@ public class LibraryService {
 
     public String returnBook(List<BorrowDTO> borrowDTOS) {
         // List<BookBorrowEntity> bookBorrowEntities ;
-        borrowDTOS.stream().forEach(borrowDTO -> {
+        borrowDTOS.forEach(borrowDTO -> {
             List<BookBorrowEntity> bookBorrowEntities;
             UsersEntity usersEntity = usersRepository.findById(borrowDTO.getUserId()).get();
             Optional<BooksEntity> booksEntity = booksRepository.findById(borrowDTO.getBookId());

@@ -25,7 +25,7 @@ public class Controller {
     LibraryService libraryService;
 
     @GetMapping("/getBooks")
-    public List<BooksEntity> getListOfAvailableBooks(){
+    public List<BooksDTO> getListOfAvailableBooks(){
         return  libraryService.getListOfAvailableBooks();
     }
 
