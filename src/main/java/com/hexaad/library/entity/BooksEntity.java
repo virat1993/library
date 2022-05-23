@@ -20,7 +20,7 @@ import java.util.List;
 @Builder
 public class BooksEntity implements Serializable {
 
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "ID")
     private Integer id;

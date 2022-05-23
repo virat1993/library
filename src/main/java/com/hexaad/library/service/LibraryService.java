@@ -11,6 +11,7 @@ import com.hexaad.library.repository.BorrowBookRepository;
 import com.hexaad.library.repository.UsersRepository;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -28,7 +29,7 @@ public class LibraryService {
     BorrowBookRepository borrowBookRepository;
 
     public List<BooksDTO> getListOfAvailableBooks() {
-        Optional<List<BooksEntity>> data = Optional.ofNullable(booksRepository.findAll());
+        Optional<List<BooksEntity>> data = Optional.of(booksRepository.findAll());
         return data.get().stream()
                 .filter(booksEntity -> booksEntity.getQuantity() > 0)
                 .map(book ->
@@ -55,7 +56,7 @@ public class LibraryService {
                 .isbn_no(booksDTO.getIsbn_no())
                 .build();
         booksRepository.save(booksEntity);
-        return "book added successfully";
+        return  "book added successfully";
     }
 
     @SneakyThrows
@@ -76,7 +77,7 @@ public class LibraryService {
 
         BookBorrowEntity entity = BookBorrowEntity.builder()
                 .booksEntity(booksEntity.get())
-                .libraryCardNumber("123")
+                .libraryCardNumber(usersEntity.get().getLibrary_card_number())
                 .userId(usersEntity.get())
                 .isReturned(1)
                 .build();
@@ -86,7 +87,6 @@ public class LibraryService {
     }
 
     public String returnBook(List<BorrowDTO> borrowDTOS) {
-        // List<BookBorrowEntity> bookBorrowEntities ;
         borrowDTOS.forEach(borrowDTO -> {
             List<BookBorrowEntity> bookBorrowEntities;
             UsersEntity usersEntity = usersRepository.findById(borrowDTO.getUserId()).get();
